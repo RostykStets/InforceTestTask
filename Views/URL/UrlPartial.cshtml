@@ -1,0 +1,120 @@
+﻿@model List<Url>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>URLS</title>
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <style>
+             body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+        .urlinfo-button {
+            background-color: #905B22;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        .service-button:hover {
+            background-color: #684116;
+        }
+        .delete-button {
+            background-color: #905B22;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        .delete-button:hover {
+            background-color: #684116;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Таблиця URLs</h1>
+       <div class="urls-container">
+        @if (Model == null || Model.Count == 0)
+        {
+            <h2 style="text-align: center; color: forestgreen; margin-top: 100px;">На даний момент ще немає urls</h2>
+        }
+        else
+        {
+            <table>
+                <tr>
+                    <th>Оригінальна URL</th>
+                    <th>Скорочена URL</th>
+                </tr>
+                @foreach (var url in Model)
+                {
+                        <tr>
+                            <td>@url.OriginalUrl</td>
+                            <td><a asp-action="GoByShortenedUrl" asp-rout-shortenedUrl="@url.ShortenedUrl">@url.ShortenedUrl</a></td>
+                            <td><a href="@Url.Action("UrlInfo","URL")" class="urlinfo-button">Інформація</a></td>
+                            <td><a asp-action="DeleteRecord" asp-route-urlId="@url.Id" class="delete-button">Видалити</a></td>
+                        </tr>
+                }
+            </table>
+        }
+</div>
+    <div id="confirmationModel" class="confirmation-model" style="display: none;">
+        <div class="confirmation-box">
+            <h2 style="text-align: center;">Підтвердіть вихід</h2>
+            <p>Ви впевнені, що хочете вийти з облікового запису?</p>
+            <button onclick="logout()" style="float: left; margin-left: 50px; padding: 10px 30px;">Так</button>
+            <button onclick="hideConfirmationModel()" style="float: right; margin-right: 50px; padding: 10px 30px;">Ні</button>
+        </div>
+    </div>
+    <script>
+        function showConfirmationModel() {
+            document.getElementById('confirmationModel').style.display = 'flex';
+        }
+
+        function hideConfirmationModel() {
+            document.getElementById('confirmationModel').style.display = 'none';
+        }
+
+        function logout() {
+            window.location.href = "/Authentication/Login";
+        }
+
+        window.onclick = function (event) {
+            var model = document.getElementById('confirmationModel');
+            if (event.target == model) {
+                hideConfirmationModel();
+            }
+        }
+    </script>
+    </body>
+</html>
