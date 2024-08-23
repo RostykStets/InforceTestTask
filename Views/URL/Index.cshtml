@@ -1,0 +1,19 @@
+﻿@model Tuple<List<Url>, InforceTestTask.Models.User>
+@{
+    var errorMessage = ViewBag.ErrorMessage as string;
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+    @if(Model.Item2 == null)
+    {
+       @await Html.PartialAsync("~/Views/URL/Topbar.cshtml");
+    }else
+    {
+        @await Html.PartialAsync("~/Views/URL/TopbarAuthorized.cshtml", Model.Item2);
+    }
+
+    @await Html.PartialAsync("~/Views/URL/UrlPartial.cshtml", Model);
+    </body>
+</html>

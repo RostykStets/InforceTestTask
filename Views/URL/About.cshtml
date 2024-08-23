@@ -1,0 +1,21 @@
+﻿@{
+    var user = (InforceTestTask.Models.User)ViewBag.User;
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Про алгоритм скорочення</title>
+    </head>
+    <body>
+        @if(Model == null)
+    {
+        @await Html.PartialAsync("~/Views/URL/AboutTopbar.cshtml", user);
+    }else
+    {
+        @await Html.PartialAsync("~/Views/URL/AboutTopbarAuthorized.cshtml", user);
+    }
+    @await Html.PartialAsync("~/Views/URL/AboutPartial.cshtml", user);
+    </body>
+</html>

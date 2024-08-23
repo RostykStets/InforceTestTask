@@ -1,0 +1,11 @@
+﻿@model Tuple<UrlViewModel,InforceTestTask.Models.User>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+    <body>
+    @await Html.PartialAsync("~/Views/URL/TopbarAuthorized.cshtml",Model.Item2);
+    @await Html.PartialAsync("~/Views/URL/URLInfoPartial.cshtml", Model.Item1);
+    </body>
+</html>
