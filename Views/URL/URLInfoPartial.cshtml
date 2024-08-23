@@ -1,0 +1,58 @@
+﻿@model UrlViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Info</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+             body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+        </style>
+</head>
+<body>
+    <h1>Інформація про URL: @Model.ShortenedUrl</h1>
+    <div class="urlinfo-container">
+        <table>
+            <tr>
+                <th>Оригінальна URL</th>
+                <th>Скорочена URL</th>
+                <th>Дата скорочення</th>
+                <th>Ким скорочена</th>
+            </tr>
+                <tr>
+                    <td>@Model.OriginalUrl</td>
+                    <td>@Model.ShortenedUrl</td>
+                    <td>@Model.CreatedDate</td>
+                    <td>@Model.UserLogin</td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

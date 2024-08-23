@@ -6,99 +6,82 @@ namespace InforceTestTask.Controllers
 {
     public class UrlController : Controller
     {
-        private readonly IAdminRepository _adminRepository;
-        private readonly IAuthorizedUserRepository _authorizedUserRepository;
         private readonly IUrlRepository _urlRepository;
         private readonly IShorteningAlgorithmRepository _shorteningAlgorithmRepository;
-        private List<Url> _urls;
-        private User? _user;
 
-        public UrlController(IAdminRepository adminRepository, IAuthorizedUserRepository authorizedUserRepository, 
-            IUrlRepository urlRepository, IShorteningAlgorithmRepository shorteningAlgorithmRepository) 
+        public UrlController(IUrlRepository urlRepository, IShorteningAlgorithmRepository shorteningAlgorithmRepository) 
         {
-            _adminRepository = adminRepository;
-            _authorizedUserRepository = authorizedUserRepository;
             _urlRepository = urlRepository;
             _shorteningAlgorithmRepository = shorteningAlgorithmRepository;
-            _urls = new List<Url>();
-            _user = null;
         }
-        public async Task<IActionResult> Index(User? user)
+        public async Task<IActionResult> Index(User user)
         {
             var urls = await _urlRepository.GetUrls();
-            _urls = urls;
-            //var urls = new List<Url>();
-            //Url url = new Url{ 
-            //    OriginalUrl = "youtube.com",
-            //    ShortenedUrl = "ytb.com",
-            //    CreatedDate = DateTime.Now,
-            //    UserId = 2,
-            //    UserType = UserType.AuthorizedUser
-            //};
-            //urls.Add(url);
-            _user = user;
-            if (_user.Login == null)
-                ViewBag.User = null;
-            else
-                ViewBag.User = user;
-            return View(_urls);
+            if (TempData["ErrorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
+            var tuple = new Tuple<List<Url>, User?>(urls, user);
+            return View(tuple);
         }
 
-        public async Task ShortUrl(User user, string originalUrl)
+        [HttpPost]
+        public async Task<IActionResult> ShortUrl(string originalUrl, User user)
         {
-            string shortenedUrl = _shorteningAlgorithmRepository.ShorteningAlgorithm(originalUrl);
+            string shortenedUrl = await _shorteningAlgorithmRepository.ShorteningAlgorithm(originalUrl);
             Url url = new Url(originalUrl, shortenedUrl, user.Id, user.UserType);
             await _urlRepository.InsertUrl(url);
+            
+            return RedirectToAction("Index", "URL", user);
         }
 
         public async Task<IActionResult> GoByShortenedUrl(string shortenedUrl)
         {
             var url = await _urlRepository.GetUrlByShortenedUrl(shortenedUrl);
-            return Redirect(url.OriginalUrl);
-        }
-
-        public async Task<IActionResult> UrlInfo(int urlId, UserType userType)
-        {
-            if (_user.Login == null)
-            {
-                TempData["ErrorMessage"] = "Видаляти записи може тільки авторизовані користувачі!";
-                return View();
-            }
-
-            var url = _urls.Where(x => x.Id == urlId).First();
-            User user = new User();
-            if (userType == UserType.Admin)
-            {
-                Admin? admin = await _adminRepository.GetAdminById(url.UserId);
-                if(admin != null) user.Login = admin.Login;
-            }
-            else
-            {
-                AuthorizedUser? authorizedUser = await _authorizedUserRepository.GetUserById(url.UserId);
-                if(authorizedUser != null) user.Login = authorizedUser.Login;
-            }
-
-            UrlViewModel urlViewModel = new UrlViewModel(url.OriginalUrl, url.ShortenedUrl, user.Login, url.CreatedDate);
-
-            return View(urlViewModel);
+            var _url = url ?? new Url();
+            return Redirect(_url.OriginalUrl);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteRecord(int urlId)
+        public async Task<IActionResult> UrlInfo(int urlId, User currentUser)
         {
-            if (_user.Login == null)
+            if (currentUser.Login == null || currentUser.IsDefault())
             {
                 TempData["ErrorMessage"] = "Видаляти записи може тільки авторизовані користувачі!";
-                return View();
+                return RedirectToAction("Index", "URL");
             }
 
-            await _urlRepository.DeleteUrl(urlId);
+            var url = await _urlRepository.getUrlById(urlId);
 
-            return View();
+            UrlViewModel urlViewModel = new UrlViewModel(url.OriginalUrl, url.ShortenedUrl, currentUser.Login, url.CreatedDate);
+            var tuple = new Tuple<UrlViewModel, User>(urlViewModel, currentUser);
+            return View(tuple);
         }
 
-        public IActionResult About()
+        [HttpPost]
+        public async Task<IActionResult> DeleteRecord(int urlId, User currentUser)
         {
+            if (currentUser.Login == null || currentUser.IsDefault())
+            {
+                TempData["ErrorMessage"] = "Видаляти записи може тільки авторизовані користувачі!";
+                return RedirectToAction("Index", "URL");
+            }
+            var url = await _urlRepository.getUrlById(urlId);
+            if(url.UserId != currentUser.Id || url.UserType != currentUser.UserType)
+            {
+                TempData["ErrorMessage"] = "Цей запис був зроблений не Вами, тому ви не можете його видалити!";
+                return RedirectToAction("Index");
+            }
+            await _urlRepository.DeleteUrl(urlId);
+            return RedirectToAction("Index", "URL", currentUser);
+        }
+
+        public IActionResult About(User user)
+        {
+            if(user.IsDefault())
+                ViewBag.User = null;
+            else
+                ViewBag.User = user;
             return View();
         }
     }

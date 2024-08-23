@@ -1,18 +1,19 @@
-﻿@model List<Url>
+﻿@model Tuple<List<Url>, InforceTestTask.Models.User>
 @{
-    var user = (InforceTestTask.Models.User)ViewBag.User; 
+    var errorMessage = ViewBag.ErrorMessage as string;
     Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en">
     <body>
-    @if(user == null)
+    @if(Model.Item2 == null)
     {
-        @Html.Partial("~/Views/URL/Topbar.cshtml", Model);
+        @Html.Partial("~/Views/URL/Topbar.cshtml");
     }else
     {
-        @Html.Partial("~/Views/URL/TopbarAuthorized.cshtml", user);
+        @Html.Partial("~/Views/URL/TopbarAuthorized.cshtml", Model.Item2);
     }
-        @Html.Partial("~/Views/URL/UrlPartial.cshtml", Model);
+
+    @Html.Partial("~/Views/URL/UrlPartial.cshtml", Model);
     </body>
 </html>
