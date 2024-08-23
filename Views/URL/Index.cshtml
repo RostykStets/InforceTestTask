@@ -8,12 +8,12 @@
     <body>
     @if(Model.Item2 == null)
     {
-        @Html.Partial("~/Views/URL/Topbar.cshtml");
+       @await Html.PartialAsync("~/Views/URL/Topbar.cshtml");
     }else
     {
-        @Html.Partial("~/Views/URL/TopbarAuthorized.cshtml", Model.Item2);
+        @await Html.PartialAsync("~/Views/URL/TopbarAuthorized.cshtml", Model.Item2);
     }
 
-    @Html.Partial("~/Views/URL/UrlPartial.cshtml", Model);
+    @await Html.PartialAsync("~/Views/URL/UrlPartial.cshtml", Model);
     </body>
 </html>

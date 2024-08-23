@@ -158,14 +158,6 @@
                 this.placeholder = 'Введіть свій пароль';
             });
 
-            // passwordInput.addEventListener('input', function () {
-            //     if (this.value.length < 8) {
-            //         this.setCustomValidity('Password must be at least 8 characters long');
-            //     } else {
-            //         this.setCustomValidity('');
-            //     }
-            // });
-
             var errorMessage = '@TempData["ErrorMessage"]';
             if (errorMessage !== 'null' && errorMessage !== '') {
                 Swal.fire({
