@@ -1,6 +1,7 @@
 ﻿using InforceTestTask.Data;
 using InforceTestTask.Models;
 using InforceTestTask.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace InforceTestTask.Repositories.Implementations
 {
@@ -20,7 +21,13 @@ namespace InforceTestTask.Repositories.Implementations
 
         public async Task<Admin?> GetAdminByLogin(string login)
         {
-            return await _context.Admins.FindAsync(login);
+            return await _context.Admins.Where(x => x.Login == login).FirstOrDefaultAsync();
+        }
+
+        public async Task InsertAdmin(Admin admin)
+        {
+            await _context.Admins.AddAsync(admin);
+            await _context.SaveChangesAsync();
         }
     }
 }

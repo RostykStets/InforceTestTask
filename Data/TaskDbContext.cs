@@ -25,11 +25,13 @@ namespace InforceTestTask.Data
         {
             modelBuilder.Entity<Admin>().HasKey(a => a.Id);
             modelBuilder.Entity<AuthorizedUser>().HasKey(user => user.Id);
+            modelBuilder.Entity<RegistrationKey>().HasKey(key => key.Id);
             modelBuilder.Entity<Url>().HasKey(url => url.Id);
         }
 
         public DbSet<Admin> Admins { get; set; }
         public DbSet<AuthorizedUser> AuthorizedUsers { get; set; }
+        public DbSet<RegistrationKey> RegistrationKeys { get; set; }
         public DbSet<Url> Urls { get; set; }
     }
 }

@@ -40,7 +40,6 @@
 
         input[type="text"],
         input[type="password"],
-        input[type="email"],
         select {
             width: 100%;
             padding: 7px;
@@ -114,7 +113,7 @@
             </div>
             <div class="form-group">
                 <label for="login">Логін:</label>
-                <input type="text" class="form-control" id="login" name="Login" placeholder="user@gmail.com" required>
+                <input type="text" class="form-control" id="login" name="Login" placeholder="Введіть логін" required>
             </div>
             <div class="form-group">
                 <label for="password">Пароль:</label>
@@ -136,13 +135,13 @@
             Вже маєте обліковий запис? <a href="/Authentication/Login">Увійти</a>
         </div>
         <div class="url-button">
-            <a href="@Url.Action("Index", "Url")">Продовжити без реєстрації</a>
+            <a href="@Url.Action("Index", "Url", null)">Продовжити без реєстрації</a>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var inputFields = document.querySelectorAll('input[type="text"], input[type="text"], input[type="password"]');
+            var inputFields = document.querySelectorAll('input[type="text"], input[type="password"]');
             inputFields.forEach(function (input) {
                 input.addEventListener('focus', function () {
                     this.placeholder = '';
