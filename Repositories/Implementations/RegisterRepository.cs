@@ -59,14 +59,14 @@ namespace InforceTestTask.Repositories.Implementations
                     user = new AuthorizedUser();
                     user.Login = userToRegister.Login;
                     user.PasswordHash = passwordHash;
-                    user.UserType = UserType.Admin;
+                    user.UserType = UserType.AuthorizedUser;
                     await _authorizedUserRepository.InsertUser(user);
                     user = await _authorizedUserRepository.GetUserByLogin(user.Login);
                     userToReturn = new UserExtended(user);
                     return userToReturn;
                 }
                 else
-                    userToReturn.ErrorMsg = "користувач з таким логіном вже існує!";
+                    userToReturn.ErrorMsg = "Користувач з таким логіном вже існує!";
             }
 
             return userToReturn;
