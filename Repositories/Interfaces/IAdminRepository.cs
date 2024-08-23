@@ -6,5 +6,6 @@ namespace InforceTestTask.Repositories.Interfaces
     {
         Task<Admin?> GetAdminById(int adminId);
         Task<Admin?> GetAdminByLogin(string login);
+        Task InsertAdmin(Admin admin);
     }
 }

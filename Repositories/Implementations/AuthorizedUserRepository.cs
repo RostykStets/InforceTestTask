@@ -1,6 +1,7 @@
 ﻿using InforceTestTask.Data;
 using InforceTestTask.Models;
 using InforceTestTask.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace InforceTestTask.Repositories.Implementations
 {
@@ -20,7 +21,13 @@ namespace InforceTestTask.Repositories.Implementations
 
         public async Task<AuthorizedUser?> GetUserByLogin(string login)
         {
-            return await _context.AuthorizedUsers.FindAsync(login);
+            return await _context.AuthorizedUsers.Where(x => x.Login == login).FirstOrDefaultAsync();
+        }
+
+        public async Task InsertUser(AuthorizedUser user)
+        {
+            await _context.AuthorizedUsers.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

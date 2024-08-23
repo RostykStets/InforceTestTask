@@ -1,4 +1,6 @@
 using InforceTestTask.Data;
+using InforceTestTask.Repositories.Implementations;
+using InforceTestTask.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,15 @@ builder.Services.AddDbContext<TaskDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("TestTaskConnection"));
 });
+
+
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IAuthorizedUserRepository, AuthorizedUserRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IRegisterRepository, RegisterRepository>();
+builder.Services.AddScoped<IRegistrationKeyRepository, RegistrationKeyRepository>();
+builder.Services.AddScoped<IUrlRepository, UrlRepository>();
+builder.Services.AddScoped<IShorteningAlgorithmRepository, ShorteningAlgorithmRepository>();
 
 var app = builder.Build();
 
@@ -30,7 +41,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    //pattern: "{controller=Home}/{action=Index}/{id?}");
     pattern: "{controller=Authentication}/{action=Login}/{id?}");
 
 app.Run();
