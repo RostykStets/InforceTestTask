@@ -1,6 +1,6 @@
 ﻿@model List<Url>
 @{
-    var user = ViewBag.User as InforceTestTask.Models.User; 
+    var user = (InforceTestTask.Models.User)ViewBag.User; 
     Layout = null;
 }
 <!DOCTYPE html>
@@ -11,7 +11,7 @@
         @Html.Partial("~/Views/URL/Topbar.cshtml", Model);
     }else
     {
-        @Html.Partial("~/Views/URL/TopbarAuthorized.cshtml", Model);
+        @Html.Partial("~/Views/URL/TopbarAuthorized.cshtml", user);
     }
         @Html.Partial("~/Views/URL/UrlPartial.cshtml", Model);
     </body>
