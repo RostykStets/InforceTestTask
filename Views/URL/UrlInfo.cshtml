@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
     <body>
-    @Html.Partial("~/Views/URL/TopbarAuthorized.cshtml",Model.Item2);
-    @Html.Partial("~/Views/URL/URLInfoPartial.cshtml", Model.Item1);
+    @await Html.PartialAsync("~/Views/URL/TopbarAuthorized.cshtml",Model.Item2);
+    @await Html.PartialAsync("~/Views/URL/URLInfoPartial.cshtml", Model.Item1);
     </body>
 </html>

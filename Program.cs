@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<TaskDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("TestTaskConnection"));
+    options.UseNpgsql(builder.Configuration["ConnectionStrings:TestTaskConnection"]);
 });
 
 

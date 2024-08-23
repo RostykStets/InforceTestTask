@@ -13,7 +13,7 @@ namespace InforceTestTask.Data
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json")
+                    .AddJsonFile("secrets.json")
                     .Build();
 
                var connectionString = configuration.GetConnectionString("TestTaskConnection");

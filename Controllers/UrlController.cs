@@ -47,7 +47,7 @@ namespace InforceTestTask.Controllers
         {
             if (currentUser.Login == null || currentUser.IsDefault())
             {
-                TempData["ErrorMessage"] = "Видаляти записи може тільки авторизовані користувачі!";
+                TempData["ErrorMessage"] = "Переглядати інформацію можуть тільки авторизовані користувачі!";
                 return RedirectToAction("Index", "URL");
             }
 
@@ -63,7 +63,7 @@ namespace InforceTestTask.Controllers
         {
             if (currentUser.Login == null || currentUser.IsDefault())
             {
-                TempData["ErrorMessage"] = "Видаляти записи може тільки авторизовані користувачі!";
+                TempData["ErrorMessage"] = "Видаляти записи можуть тільки авторизовані користувачі!";
                 return RedirectToAction("Index", "URL");
             }
             var url = await _urlRepository.getUrlById(urlId);

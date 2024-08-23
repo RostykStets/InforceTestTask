@@ -3,6 +3,5 @@
     public interface IShorteningAlgorithmRepository
     {
         Task<string> ShorteningAlgorithm(string originalUrl);
-        //string ShorteningAlgorithm(string originalUrl);
     }
 }

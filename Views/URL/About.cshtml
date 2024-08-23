@@ -11,11 +11,11 @@
     <body>
         @if(Model == null)
     {
-        @Html.Partial("~/Views/URL/AboutTopbar.cshtml", user);
+        @await Html.PartialAsync("~/Views/URL/AboutTopbar.cshtml", user);
     }else
     {
-        @Html.Partial("~/Views/URL/AboutTopbarAuthorized.cshtml", user);
+        @await Html.PartialAsync("~/Views/URL/AboutTopbarAuthorized.cshtml", user);
     }
-    @Html.Partial("~/Views/URL/AboutPartial.cshtml", user);
+    @await Html.PartialAsync("~/Views/URL/AboutPartial.cshtml", user);
     </body>
 </html>
