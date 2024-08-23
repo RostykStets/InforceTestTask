@@ -8,6 +8,7 @@
             Login = string.Empty;
             PasswordHash = string.Empty;
             ErrorMsg = string.Empty;
+            UserType = UserType.AuthorizedUser;
         }
         public UserExtended(Admin admin)
         {

@@ -5,6 +5,7 @@ namespace InforceTestTask.Repositories.Interfaces
     public interface IUrlRepository
     {
         Task<List<Url>> GetUrls();
+        Task<Url?> getUrlById(int urlId);
         Task<List<Url>> GetUrlsByUserId(int userId, UserType userType);
         Task<Url?> GetUrlByOriginalUrl(string originalUrl);
         Task<Url?> GetUrlByShortenedUrl(string shortenedUrl);

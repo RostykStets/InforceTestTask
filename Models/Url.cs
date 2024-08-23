@@ -20,7 +20,7 @@ namespace InforceTestTask.Models
             ShortenedUrl = shortenedUrl;
             UserId = userId;
             UserType = userType;
-            CreatedDate = DateTime.Now;
+            CreatedDate = DateTime.UtcNow;
         }
     }
 }

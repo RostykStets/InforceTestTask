@@ -23,6 +23,11 @@ namespace InforceTestTask.Repositories.Implementations
             }
         }
 
+        public async Task<Url?> getUrlById(int urlId)
+        {
+            return await _context.Urls.FindAsync(urlId);
+        }
+
         public async Task<Url?> GetUrlByOriginalUrl(string originalUrl)
         {
             return await _context.Urls.Where(url => url.OriginalUrl == originalUrl).FirstOrDefaultAsync();

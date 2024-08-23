@@ -136,7 +136,7 @@
             Ще не маєте облікового запису? <a href="/Authentication/Register">Зареєструватись</a>
         </div>
         <div class="url-button">
-            <a href="@Url.Action("Index", "Url")">Продовжити без авторизації</a>
+            <a href="@Url.Action("Index", "Url", new {user = new User()})">Продовжити без авторизації</a>
         </div>
     </div>
 

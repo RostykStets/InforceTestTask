@@ -1,5 +1,6 @@
-﻿@model List<Url>
+﻿@model Tuple<List<Url>, InforceTestTask.Models.User>
 @{
+    var errorMessage = ViewBag.ErrorMessage as string;
     Layout = null;
 }
 
@@ -65,7 +66,7 @@
     <body>
         <h1>Таблиця URLs</h1>
        <div class="urls-container">
-        @if (Model == null || Model.Count == 0)
+        @if (Model.Item1 == null || Model.Item1.Count == 0)
         {
             <h2 style="text-align: center; color: forestgreen; margin-top: 100px;">На даний момент ще немає urls</h2>
         }
@@ -76,13 +77,30 @@
                     <th>Оригінальна URL</th>
                     <th>Скорочена URL</th>
                 </tr>
-                @foreach (var url in Model)
+                @foreach (var url in Model.Item1)
                 {
                         <tr>
                             <td>@url.OriginalUrl</td>
-                            <td><a asp-action="GoByShortenedUrl" asp-rout-shortenedUrl="@url.ShortenedUrl">@url.ShortenedUrl</a></td>
-                            <td><a href="@Url.Action("UrlInfo","URL")" class="urlinfo-button">Інформація</a></td>
-                            <td><a asp-action="DeleteRecord" asp-route-urlId="@url.Id" class="delete-button">Видалити</a></td>
+                            <td><a asp-action="GoByShortenedUrl" asp-route-shortenedUrl="@url.ShortenedUrl">@url.ShortenedUrl</a></td>
+                        <td>
+                            <form asp-controller="URL" asp-action="UrlInfo" method="post">
+                                <input type="hidden" name="urlId" value="@url.Id" />
+                                <input type="hidden" name="currentUser.Id" value="@Model.Item2?.Id" />
+                                <input type="hidden" name="currentUser.Login" value="@Model.Item2?.Login" />
+                                <input type="hidden" name="currentUser.PasswordHash" value="@Model.Item2?.PasswordHash" />
+                                <input type="hidden" name="currentUser.UserType" value="@Model.Item2?.UserType" />
+                                <button class="urlinfo-button">Інформація</button>
+                            </form>   
+                            <td>
+                                <form asp-controller="URL" asp-action="DeleteRecord" method="post">
+                                <input type="hidden" name="urlId" value="@url.Id"/>
+                                <input type="hidden" name="currentUser.Id" value="@Model.Item2?.Id" />
+                                <input type="hidden" name="currentUser.Login" value="@Model.Item2?.Login" />
+                                <input type="hidden" name="currentUser.PasswordHash" value="@Model.Item2?.PasswordHash" />
+                                <input type="hidden" name="currentUser.UserType" value="@Model.Item2?.UserType" />
+                                <button class="delete-button">Видалити</button>
+                                </form>
+                                </td>
                         </tr>
                 }
             </table>
@@ -115,6 +133,19 @@
                 hideConfirmationModel();
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // if ("@errorMessage" !== "") 
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ой...',
+                    text: "@errorMessage"
+                });
+            }
+
+        });
+
     </script>
     </body>
 </html>
