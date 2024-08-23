@@ -27,6 +27,10 @@ namespace InforceTestTask.Data
             modelBuilder.Entity<AuthorizedUser>().HasKey(user => user.Id);
             modelBuilder.Entity<RegistrationKey>().HasKey(key => key.Id);
             modelBuilder.Entity<Url>().HasKey(url => url.Id);
+            modelBuilder.Entity<RegistrationKey>().HasData(new RegistrationKey
+            {
+                Id = 1, Key = "qwerty12"
+            });
         }
 
         public DbSet<Admin> Admins { get; set; }
